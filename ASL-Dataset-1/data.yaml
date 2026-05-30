@@ -1,0 +1,29 @@
+names:
+- I
+- apple
+- can
+- get
+- good
+- have
+- help
+- how
+- like
+- love
+- my
+- 'no'
+- sorry
+- thank-you
+- want
+- 'yes'
+- you
+- your
+nc: 18
+roboflow:
+  license: Public Domain
+  project: asl-dataset-p9yw8-zt56v
+  url: https://universe.roboflow.com/sahiths-workspace/asl-dataset-p9yw8-zt56v/dataset/1
+  version: 1
+  workspace: sahiths-workspace
+test: ../test/images
+train: ../train/images
+val: ../valid/images
