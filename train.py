@@ -1,7 +1,13 @@
 from roboflow import Roboflow
 from ultralytics import YOLO
+from dotenv import load_dotenv
+import os
 
-rf = Roboflow(api_key="BGpuuvjOigJfTT7mNdKY")
+load_dotenv()
+apiKey = os.getenv("API_KEY")
+
+
+rf = Roboflow(api_key=apiKey)
 project = rf.workspace("sahiths-workspace").project("asl-dataset-p9yw8-zt56v")
 dataset = project.version(1).download("yolov8")
 
