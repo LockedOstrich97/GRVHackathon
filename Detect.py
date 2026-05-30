@@ -1,8 +1,3 @@
-#hi
-#hi from zander
-#hi from dongyu
-#hi
-#hi from zander
 from ultralytics import YOLO
 import cv2
 
