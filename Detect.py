@@ -1,15 +1,24 @@
 from ultralytics import YOLO
 import cv2
 from collections import Counter
+import time
 
 model = YOLO("runs/detect/train/weights/best.pt")
 cam = cv2.VideoCapture(0)
+
+# Video recording setup
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+timestamp = time.strftime("%Y%m%d-%H%M%S")
+out = cv2.VideoWriter(f"recording_{timestamp}.mp4", fourcc, 20.0, (640, 480))
+recording = False
 
 frameCount = 0
 detections = []
 SAMPLE_SIZE = 30
 CONFIDENCE = 0.5
 last_printed = None
+
+print("Press R to start/stop recording, Q to quit")
 
 while True:
     ret, frame = cam.read()
@@ -61,9 +70,25 @@ while True:
     cv2.putText(display, f"Confidence: {consistency:.0%}",
                 (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-    cv2.imshow("ASL Detection", display)
-    if cv2.waitKey(33) == ord("q"):
-        break
+    # Show recording indicator
+    if recording:
+        cv2.circle(display, (620, 30), 15, (0, 0, 255), -1)  # red dot
+        cv2.putText(display, "REC", (580, 25),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+        out.write(display)  # save frame to video
 
+    cv2.imshow("ASL Detection", display)
+
+    key = cv2.waitKey(33) & 0xFF
+    if key == ord("q"):
+        break
+    elif key == ord("r"):
+        recording = not recording
+        if recording:
+            print(f"Recording started -> recording_{timestamp}.mp4")
+        else:
+            print("Recording stopped")
+
+out.release()
 cam.release()
 cv2.destroyAllWindows()
