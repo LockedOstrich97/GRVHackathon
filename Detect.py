@@ -3,7 +3,8 @@ import cv2
 from collections import Counter
 import time
 
-model = YOLO("runs/detect/train/weights/best.pt")
+
+model_local = YOLO("runs/detect/letters-3/weights/best.pt")
 cam = cv2.VideoCapture(0)
 
 # Video recording setup
@@ -26,10 +27,10 @@ while True:
         break
 
     frameCount += 1
-    if frameCount % 5 != 0:
+    if frameCount % 30 != 0:
         continue
 
-    results = model(frame, imgsz=320, verbose=False, max_det=1)
+    results = model_local(frame, imgsz=320, verbose=False, max_det=1)
 
     # Only take the single highest confidence detection per frame
     best_label = None
@@ -37,7 +38,7 @@ while True:
 
     for box in results[0].boxes:
         conf = float(box.conf)
-        label = model.names[int(box.cls)]
+        label = model_local.names[int(box.cls)]
         if conf > best_conf and conf >= CONFIDENCE:
             best_conf = conf
             best_label = label
